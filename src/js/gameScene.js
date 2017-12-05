@@ -19,34 +19,46 @@ var squad = [
   },
 ]
 
+// enemies
+var enemies = [
+  {
+    start: {
+      x: 30,
+      y: 20,
+    },
+    speed: 4,
+    path: [],
+  }
+]
+
 var WALKABLE = 0
 var WALL = 1
 
 var pathfinder
 var map = [ // NOTE: use single characters in map because easier
 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
-[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,],
+[1, , , , , ,1, , , , , , , , , , , , , , , , , , , , , , , , ,1,],
+[1, , , , , ,1, , , , , , , , , , , , , , , , , , , , , , , , ,1,],
+[1, , , , , ,1, , ,1,1,1,1,1, , ,1,1,1, , ,1,1, , ,1,1,1, , ,1,1,],
+[1, , , , , ,1, , ,1, , , , , , , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1, , , , , , , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1, , , , , , , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1,1,1,1,1,1, , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1, , , , , , , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1, , , , , , , , ,1, , ,1,1,1,1,1,1,1,1,1,1,1,],
+[1, , , , , ,1, , ,1, , , , ,1,1,1,1,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1, , , , ,1, , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1, , , , ,1, , , ,1, , ,1, , , , ,1, , , , ,1,],
+[1, , , , , ,1, , ,1,1,1,1,1,1, , ,1,1, , ,1, , ,1,1,1,1, , ,1,1,],
+[1, , , , , ,1, , , , , , , , , , , ,1, , , , , , , , , , , , ,1,],
+[1, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , ,1,],
+[1, , , , , , , , , , , , , , , , , , , , , , , , , , , , , , ,1,],
+[1, , , , , ,1, , , , , , , , , , , ,1, , , , , , , , , , , , ,1,],
+[1,1,1,1,1,1,1, , ,1,1,1,1,1,1,1,1,1,1,1,1,1, , ,1,1,1,1, , ,1,1,],
+[1, , , , ,1, , , , ,1, , , ,1, , , ,1, , , , , , ,1, , , , , ,1,],
+[1, , , , , , , , , , , , , , , , , ,1, , , , , , ,1, , , , , ,1,],
+[1, , , , , , , , , , , , , , , , , ,1, , , , , , ,1, , , , , ,1,],
+[1, , , , ,1,1,1,1,1,1, , , ,1, , , ,1, , , , , , ,1, , , , , ,1,],
 [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,],
 ]
 
@@ -59,23 +71,26 @@ var gameScene = {
     this.tileContainer = new PIXI.Container()
     this.pathingContainer = new PIXI.Container()
     this.selectionContainer = new PIXI.Container()
+    this.enemyContainer = new PIXI.Container()
     this.squadContainer = new PIXI.Container()
 
     this.container.addChild(this.tileContainer)
     this.container.addChild(this.pathingContainer)
     this.container.addChild(this.selectionContainer)
+    this.container.addChild(this.enemyContainer)
     this.container.addChild(this.squadContainer)
 
     global.baseStage.addChild(this.container)
 
-    // create map tile graphics
+    // create map tile sprites
     for (let y = 0; y < map.length; y++) {
       for (let x = 0; x < map[y].length; x++) {
 
         // pick texture
         let texture
         switch (map[y][x]) {
-          case 0:
+          case undefined:
+          map[y][x] = WALKABLE // NOTE: used spaces in map so it is easier to see
           texture = PIXI.loader.resources['square'].texture
           break
           case 1:
@@ -103,7 +118,7 @@ var gameScene = {
     tileTargetSprite = new PIXI.Sprite(PIXI.loader.resources['target'].texture)
     this.selectionContainer.addChild(tileTargetSprite)
 
-    // create squad graphics
+    // create squad sprites
     for (let i = 0; i < squad.length; i++) {
       let squadMember = squad[i]
 
@@ -119,6 +134,24 @@ var gameScene = {
 
       // save sprite
       squadMember.sprite = sprite
+    }
+
+    // create enemy sprites
+    for (let i = 0; i < enemies.length; i++) {
+      let enemy = enemies[i]
+
+      // create sprite
+      let sprite = new PIXI.Sprite(PIXI.loader.resources['enemy001'].texture)
+
+      // position sprite at starting position
+      sprite.x = enemy.start.x * TILESIZE
+      sprite.y = enemy.start.y * TILESIZE
+
+      // add to layer
+      this.enemyContainer.addChild(sprite)
+
+      // save sprite
+      enemy.sprite = sprite
     }
 
     // init interaction
@@ -189,6 +222,65 @@ var gameScene = {
         squadMember.sprite.y += Math.sin(angle) * squadMember.speed
       }
     }
+
+    // enemy
+    for (let i = 0; i < enemies.length; i++) {
+      let enemy = enemies[i]
+
+      // keep look out for intruders
+      if (!enemy.target) {
+
+        for (let j = 0; j < squad.length; j++) {
+          let squadMember = squad[j]
+
+          let dx = squadMember.sprite.x - enemy.sprite.x
+          let dy = squadMember.sprite.y - enemy.sprite.y
+          let h = Math.sqrt(dx * dx + dy * dy)
+
+          // found one, inside a 90 pixel radius
+          if (h < 200) {
+            enemy.target = squadMember
+
+            let currentX = Math.floor(enemy.sprite.x / TILESIZE)
+            let currentY = Math.floor(enemy.sprite.y / TILESIZE)
+
+            let targetX = Math.floor(squadMember.sprite.x / TILESIZE)
+            let targetY = Math.floor(squadMember.sprite.y / TILESIZE)
+
+            pathfinder.findPath(
+              currentX,
+              currentY,
+              targetX,
+              targetY,
+              function (path) {
+                if (path) {
+                  this.path = path
+
+                // no path, ignore
+                } else {
+                  this.target = null
+                }
+              }.bind(enemy))
+          }
+        }
+
+      // move enemy towards squad member
+      } else if (enemy.path.length > 0) {
+        let nextTarget = enemy.path[0]
+        let dx = nextTarget.x * TILESIZE - enemy.sprite.x
+        let dy = nextTarget.y * TILESIZE - enemy.sprite.y
+        let h = Math.sqrt(dx * dx + dy * dy)
+        if (h < enemy.speed + 1) {
+          enemy.path.shift()
+          enemy.target = null
+        } else {
+          let angle = Math.atan2(dy, dx)
+          enemy.sprite.x += Math.cos(angle) * enemy.speed
+          enemy.sprite.y += Math.sin(angle) * enemy.speed
+        }
+      }
+    }
+
   },
   draw: function () {
     global.renderer.render(this.container)

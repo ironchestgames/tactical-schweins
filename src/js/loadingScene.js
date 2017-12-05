@@ -12,6 +12,7 @@ var loadingScene = {
     .add('square_impassable', 'assets/images/square_impassable.png')
     .add('square_selected', 'assets/images/square_selected.png')
     .add('target', 'assets/images/target.png')
+    .add('enemy001', 'assets/images/enemy001.png')
     
     .load(function () {
       this.changeScene(localStorage.scene || 'gameScene', sceneParams)
