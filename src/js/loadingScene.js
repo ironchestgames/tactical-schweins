@@ -7,8 +7,11 @@ var loadingScene = {
     // fetch assets
     PIXI.loader
 
-    // buttons
-    // .add('image_asset001', 'assets/images/image_asset001.png')
+    .add('gubbe001', 'assets/images/gubbe001.png')
+    .add('square', 'assets/images/square.png')
+    .add('square_impassable', 'assets/images/square_impassable.png')
+    .add('square_selected', 'assets/images/square_selected.png')
+    .add('target', 'assets/images/target.png')
     
     .load(function () {
       this.changeScene(localStorage.scene || 'gameScene', sceneParams)
